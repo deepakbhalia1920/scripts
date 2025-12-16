@@ -1,0 +1,139 @@
+#!/bin/bash
+# -----------------------------------------------------------------------------
+# Script Name : forecast_create_vm_inst.sh
+# Purpose     : Create (or reuse) a Compute Engine VM, ensure network access
+#               to AlloyDB (TCP 5432), copy forecast DDL scripts to the VM, and
+#               execute the wrapper script that applies DDL to AlloyDB.
+#
+# Prerequisites:
+#   - gcloud CLI installed and authenticated (gcloud auth login or ADC)
+#   - Roles: Compute Admin (roles/compute.admin) and ability to create firewall rules
+#   - VPC routing allows VM-to-AlloyDB connectivity (Private IP / peering / PSC)
+#   - The source files exist at SRC_PATH on the local machine running this script
+# -----------------------------------------------------------------------------
+
+# --------------------------- VM Configuration ---------------------------------
+CLUSTER_ID="alloydb-dev-cluster-new"
+PRIMARY_INSTANCE_ID="alloydb-dev-primary-new"
+INSTANCE_NAME="agent-my-vm-test16" # Compute Engine instance name
+REGION="us-central1"
+ZONE_NAME="us-central1-a" # Zone for VM
+MACHINE_NAME="e2-medium" # Machine type
+IMAGE_FAMILY="debian-11" # OS image family
+IMAGE_PROJECT="debian-cloud"  # OS image project
+TAG="ssh-access"
+SCOPES="https://www.googleapis.com/auth/cloud-platform"
+# --------------------------- Account / Project --------------------------------
+ACCOUNT="deepak.kumar214e17@cognizant.com"
+PROJECT_NAME="cog01k76j1fr1385r4k0300aq7hxg"
+
+# VPC and Subnet details (update these as per your environment)
+VPC_NAME="default" # Target VPC network
+SUBNET_NAME="default"  # Target subnet within VPC
+
+# AlloyDB details
+#ALLOYDB_HOST="10.123.50.2"
+ALLOYDB_PORT=5432
+
+echo "Creating or verifying VM instance: $INSTANCE_NAME"
+
+gcloud config set account ${ACCOUNT}
+gcloud config set project ${PROJECT_NAME}
+
+# Check if VM exists and is running
+VM_STATUS=$(gcloud compute instances describe "$INSTANCE_NAME" --zone="$ZONE_NAME" --format='get(status)' 2>/dev/null)
+echo "Current VM status: $VM_STATUS"
+
+if [[ "$VM_STATUS" == "RUNNING" ]]; then
+    echo "VM $INSTANCE_NAME is already running. Continuing..."
+else
+    echo "VM $INSTANCE_NAME is not running. Creating VM..."
+    gcloud compute instances create "${INSTANCE_NAME}" \
+        --zone="${ZONE_NAME}" \
+        --machine-type="${MACHINE_NAME}" \
+        --image-family="${IMAGE_FAMILY}" \
+        --image-project="${IMAGE_PROJECT}" \
+        --tags="${TAG}" \
+        --scopes="${SCOPES}" \
+        --network="${VPC_NAME}" \
+        --subnet="${SUBNET_NAME}" \
+        --no-address
+fi
+
+if [ $? -ne 0 ]; then
+    echo "Error while creating VM. Exiting."
+    exit 1
+fi
+
+# ----------------------- Firewall for AlloyDB Access --------------------------
+echo "Ensuring firewall rule for AlloyDB connectivity..."
+gcloud compute firewall-rules describe allow-alloydb --format='get(name)' 2>/dev/null
+if [ $? -ne 0 ]; then
+    gcloud compute firewall-rules create allow-alloydb \
+        --allow=tcp:${ALLOYDB_PORT} \
+        --network=${VPC_NAME} \
+        --source-tags=${TAG}
+fi
+
+# ------------------------------ VM Preparation --------------------------------
+echo "Waiting for VM and AlloyDB to be ready..."
+gcloud compute ssh "${INSTANCE_NAME}" --zone="${ZONE_NAME}" --command="sudo apt-get update && sudo apt-get install -y netcat"
+
+sleep 60
+
+# Check connectivity from VM to AlloyDB
+echo "Checking connectivity to AlloyDB from VM..."
+#gcloud compute ssh "${INSTANCE_NAME}" --zone="${ZONE_NAME}" --command="nc -zv ${ALLOYDB_HOST} ${ALLOYDB_PORT}"
+#if [ $? -ne 0 ]; then
+#    echo "Cannot reach AlloyDB from VM. Please check VPC and firewall settings."
+#    exit 1
+#fi
+
+# ------------------------------ Copy DDL Files --------------------------------
+# Forecast DDL scripts to be executed on the VM.
+SCRIPT_FILES=("forecast_create_ddl.sh" "forecast_create_table.sql")
+USERNAME="deepak_kumar214e17"
+TGT_PATH="/home/${USERNAME}/"
+SRC_PATH="/home/deepak_kumar214e17/alloydb_gc/forecast/script/"
+
+for FILE in "${SCRIPT_FILES[@]}"; do
+    echo "Copying $SRC_PATH$FILE"
+    gcloud compute scp "${SRC_PATH}${FILE}" "${USERNAME}@${INSTANCE_NAME}:${TGT_PATH}" --zone="${ZONE_NAME}"
+done
+
+echo "Files copied successfully."
+
+##########
+#AlloyDB identifiers (optional, used for dynamic IP retrieval)
+ALLOYDB_CLUSTER_ID="${CLUSTER_ID}"
+ALLOYDB_PRIMARY_INSTANCE_ID="${PRIMARY_INSTANCE_ID}"
+ALLOYDB_REGION="${REGION}"
+
+ALLOYDB_IP=$(gcloud alloydb instances describe ${ALLOYDB_PRIMARY_INSTANCE_ID} \
+    --cluster=${ALLOYDB_CLUSTER_ID} \
+    --region=${ALLOYDB_REGION} \
+    --format="value(ipAddress)") # Or value(networkConfig.privateIpAddress) if that's what worked
+
+echo "${ALLOYDB_IP}"
+if [ -z "$ALLOYDB_IP" ]; then
+    echo "Error: Could not retrieve AlloyDB IP address. Exiting."
+    exit 1
+fi
+
+echo "AlloyDB Primary Instance IP: ${ALLOYDB_IP}"
+export ALLOYDB_IP
+##############
+
+# --------------------------- Execute DDL Wrapper ------------------------------
+echo "Executing DDL wrapper script on VM..."
+gcloud compute ssh "${INSTANCE_NAME}" --zone="${ZONE_NAME}" --command="bash ${TGT_PATH}forecast_create_ddl.sh \"${ALLOYDB_IP}\""
+
+if [ $? -eq 0 ]; then
+    echo "DDL created successfully in AlloyDB."
+else
+    echo "Error creating DDL in AlloyDB. Exiting."
+    exit 1
+fi
+
+
+echo "All done."
