@@ -1,0 +1,60 @@
+PROJECT_ID="cog01k76j1fr1385r4k0300aq7hxg" # GCP Project ID
+INSTANCE_NAME="cloudsql-mysql-gc-instance" # Cloud SQL instance name (global)
+REGION="us-central1" # Region for the instance
+#TIER="db-f1-micro"            # choose a tier to match workload
+TIER="db-custom-2-8192" # Choose a tier to match workload; db-custom-2-8192 ≈ 2 vCPU / 8 GB RAM
+ROOT_PASSWORD="Mysql@dev1" # initial root password
+DATABASE_VERSION="MYSQL_8_0" # MySQL major version
+
+# If you prefer Private IP only, set PRIVATE_ONLY=true and provide VPC self-link
+PRIVATE_ONLY=false
+VPC_SELF_LINK=""  # e.g. "projects/${PROJECT_ID}/global/networks/default"
+
+#####################################################################################
+
+REPO_URL="https://github.com/deepakbhalia1920/srcdump.git" # Source Git repo
+CLONE_DIR="raw_dataset" # Local repo folder name
+CLONE_DIR_ECOMM="/home/deepak_kumar214e17/raw_dataset/Ecommerce/dataset" # Dataset subfolder
+BUCKET_NAME="gs://alloydb-gc-usecase-newsetup/raw/ecomm/" # Destination GCS path
+HOMEDIR="/home/deepak_kumar214e17" # Base home directory
+FILES_TO_UPLOAD="fashion_dataset.csv"
+##################
+###############################################################
+HOST="127.0.0.1" # Local host used by proxy
+DB_NAME="mysql"
+APP_DB_NAME="cloudsql_demo"
+SQL_FILE="ecomm_fashion_mysql_create_table.sql"
+DB_USER="root"
+PASSWORD="Mysql@dev1"
+
+# --- New User Details ---
+NEW_USER="app_user"
+NEW_PASSWORD="Mysql@dev1" # password
+NEW_USER_DB_NAME="mysql" # The database this new user will primarily access
+###############################################################################
+#############################################
+TABLE_NAME="fashion_products"           # Target table in DB
+
+# GCS locations
+BUCKET_NAME="gs://alloydb-gc-usecase-newsetup/raw/ecomm/"     # bucket root for IAM grant
+OBJECT_URI="gs://alloydb-gc-usecase-newsetup/raw/ecomm/fashion_dataset.csv"  # full CSV path
+BUCKET_ROOT="gs://alloydb-gc-usecase-newsetup/"
+
+# CSV parsing options
+CSV_HAS_HEADER="false"                   # set to "true" if first line is header
+CSV_DELIMITER=","                      # set delimiter: "," ";" "|"
+CSV_QUOTE="\""                         # typical '"'
+CSV_ESCAPE="\\\\"                      # typical '\\'
+CSV_LINE_ENDING="\n"                   # LF; use "\r\n" if needed
+
+# Optional explicit column order (comma-separated, matching CSV order)
+# Leave empty if table’s column order matches CSV exactly
+#COLUMNS_LIST="product_id,category,brand,price,currency,available_from"
+COLUMNS_LIST=""
+# Fallback (Option 2) local path if needed
+LOCAL_FILE="/tmp/fashion_dataset.csv"
+
+# Proxy credentials (for fallback)
+ROOT_USER="root"
+ROOT_PASSWORD="Mysql@dev1"
+PROXY_PORT="6543"
