@@ -1,0 +1,51 @@
+# --- Configuration Variables (Update these as needed) ---
+
+PROJECT_ID="cog01k76j1fr1385r4k0300aq7hxg" # GCP Project ID
+REGION="us-central1" # Region where AlloyDB cluster will be created
+CLUSTER_ID="alloydb-dev-cluster-new" # Name of the AlloyDB cluster
+INSTANCE_ID="alloydb-dev-primary-new" # Name of the primary instance
+DB_PASSWORD="AlloyDB_Dev" # Password for the default database user
+MACHINE_TYPE="n2-highmem-2" # Machine type for the instance
+NETWORK_NAME="alloydb-network" # VPC network name
+ACCOUNT="deepak.kumar214e17@cognizant.com" # GCP account to use
+
+# --------------------------- Git Configuration -----------------------------------
+REPO_URL="https://github.com/deepakbhalia1920/srcdump.git" # Source repo URL
+CLONE_DIR="raw_dataset" # Local repo directory
+CLONE_DIR_ECOMM="/home/deepak_kumar214e17/raw_dataset/Ecommerce/dataset"
+# Target GCS bucket/folder (must exist or gsutil should have permissions to create)
+BUCKET_NAME="gs://alloydb-gc-usecase-newsetup/raw/ecomm/"
+#BUCKET_NAME="gs://alloydb-gc-usecase/search-usecase/"
+#FOLDER_TO_UPLOAD="load_data*.sh"  # relative path inside repo
+HOMEDIR="/home/deepak_kumar214e17" # Your home directory
+
+FILES_TO_UPLOAD="fashion_dataset.csv"
+# --------------------------- VM Configuration ---------------------------------
+PRIMARY_INSTANCE_ID="alloydb-dev-primary-new"
+INSTANCE_NAME="agent-my-vm-test16" # Compute Engine instance name
+ZONE_NAME="us-central1-a" # Zone for VM
+MACHINE_NAME="e2-medium" # Machine type
+IMAGE_FAMILY="debian-11" # OS image family
+IMAGE_PROJECT="debian-cloud"  # OS image project
+TAG="ssh-access" # Network tag used for firewall targeting
+SCOPES="https://www.googleapis.com/auth/cloud-platform" # Broad scope (consider least-privilege SA)
+# --------------------------- Account / Project --------------------------------
+VPC_NAME="default" # Target VPC network
+SUBNET_NAME="default" # Target subnet within VPC
+ALLOYDB_PORT=5432
+
+#########
+DATABASE_NAME="postgres"  # Target database
+SQL_FILE="ecomm_fashion_ddl.sql" # SQL file to execute
+USER="postgres" # Database user
+PASSWORD="AlloyDB_Dev" # Database password
+# gcloud account/project 
+########################################################
+# AlloyDB details
+ALLOYDB_HOST="10.123.50.2"
+######
+PRE_SQL_FILE="ecomm_fashion_presql.sql"
+USERNAME="deepak_kumar214e17"
+################################################
+BUCKET_NAME_ROOT="alloydb-gc-usecase-newsetup"
+ECOMM_TABLE="alloydb_demo.fashion_products_chk2312"
