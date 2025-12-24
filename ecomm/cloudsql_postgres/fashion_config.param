@@ -1,0 +1,34 @@
+# --------------------------- Configuration -----------------------------------
+
+PROJECT_ID="cog01k76j1fr1385r4k0300aq7hxg"  # GCP Project ID
+INSTANCE_NAME="cloudsql-postgres-instance-0112" # Cloud SQL instance name (global)
+REGION="us-central1" # Region for the instance
+TIER="db-custom-2-8192" # Choose based on your need but should not be micro and small,example  Custom tier: 2 vCPU, 8 GB RAM
+ROOT_PASSWORD="Cloudsql@dev1" # Password for 'postgres' user but it should be change as per need.
+DATABASE_VERSION="POSTGRES_14" # PostgreSQL major version
+ACCOUNT="deepak.kumar214e17@cognizant.com"  # gcloud account to use
+# --------------------------- Configuration -----------------------------------
+REPO_URL="https://github.com/deepakbhalia1920/srcdump.git" # Source repo URL
+CLONE_DIR="raw_dataset" # Local repo directory
+CLONE_DIR_ECOMM="/home/deepak_kumar214e17/raw_dataset/Ecommerce/dataset"
+# Target GCS bucket/folder (must exist or gsutil should have permissions to create)
+BUCKET_NAME="gs://alloydb-gc-usecase-newsetup/raw/ecomm/"
+HOMEDIR="/home/deepak_kumar214e17" # Your home directory
+FILES_TO_UPLOAD="fashion_dataset.csv"
+
+# --- Configuration ---
+HOST="127.0.0.1" # Local host
+PORT="5432" # Local port
+DB_NAME="postgres" # Target database        
+SQL_FILE="ecomm_fashion_cloudsql_create_table.sql" # SQL file containing DDL statements
+#BUCKET="gs://alloydb-usecase/uploads"
+DB_USER="postgres" # Database user
+PASSWORD="Cloudsql@dev1" # Password
+
+################################################################################
+BUCKET_NAME_ROOT="gs://alloydb-gc-usecase-newsetup/"  # Used for IAM grant
+ECOMM_FILENAME="fashion_dataset.csv" # CSV to import
+ECOMM_TABLE="cloudsql_demo.fashion_products" # Destination table 
+
+# --- Configuration ---
+PRE_SQL_FILE="ecomm_fashion_cloudsql_presql.sql"
