@@ -10,7 +10,7 @@
 #   - IAM/permissions to run 'gcloud alloydb' (optional, for IP lookup)
 #   - The SQL file exists in the working directory or path provided
 # -----------------------------------------------------------------------------
-. /home/deepak_kumar214e17/fashion_config.param
+. ./fashion_config.param
 
 echo "${SQL_FILE}"
 # Export password for psql
@@ -25,5 +25,6 @@ echo "AlloyDB Primary Instance IP: $REMOTE_ALLOYDB_IP"
 # SQL to create table
 sudo apt install postgresql-client -y
 psql --version
+
 
 psql -h "${REMOTE_ALLOYDB_IP}" -p $ALLOYDB_PORT -U $USER -d $DATABASE_NAME -f ${SQL_FILE}
