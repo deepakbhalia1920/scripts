@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS alloydb_demo;
 CREATE EXTENSION IF NOT EXISTS vector;
---This table hold product level detail.
+--This table holds product level detail.
 CREATE TABLE IF NOT EXISTS alloydb_demo.products (
   sku               TEXT PRIMARY KEY,
   title             TEXT NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS alloydb_demo.products (
   last_embedded_at  TIMESTAMPTZ,
   created_at        TIMESTAMPTZ DEFAULT now()
 );
---this table hold store level detail
+--this table holds store level detail
 CREATE TABLE IF NOT EXISTS alloydb_demo.stores (
   store_id   SERIAL PRIMARY KEY,
   code       TEXT UNIQUE NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS alloydb_demo.stores (
   region     TEXT,
   timezone   TEXT
 );
---this table hold suppliers detail
+--this table holds uppliers detail
 CREATE TABLE IF NOT EXISTS alloydb_demo.suppliers (
   supplier_id     SERIAL PRIMARY KEY,
   name            TEXT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS alloydb_demo.suppliers (
   email           TEXT,
   terms           TEXT
 );
--- this table hold product and supplier level infomation
+-- this table holds product and supplier level information
 CREATE TABLE IF NOT EXISTS alloydb_demo.product_suppliers (
   sku             TEXT NOT NULL REFERENCES alloydb_demo.products(sku) ON DELETE CASCADE,
   supplier_id     INT  NOT NULL REFERENCES alloydb_demo.suppliers(supplier_id) ON DELETE CASCADE,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS alloydb_demo.product_suppliers (
   PRIMARY KEY (sku, supplier_id)
 );
 
---this table holde stock level detail info
+--this table holds stock level detail information
 CREATE TABLE IF NOT EXISTS alloydb_demo.stock_levels (
   store_id        INT  NOT NULL REFERENCES alloydb_demo.stores(store_id),
   sku             TEXT NOT NULL REFERENCES alloydb_demo.products(sku),
