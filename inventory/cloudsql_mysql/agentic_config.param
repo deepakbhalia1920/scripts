@@ -1,0 +1,23 @@
+# --------------------------- Configuration -----------------------------------
+
+PROJECT_ID="cog01k76j1fr1385r4k0300aq7hxg" # GCP Project ID
+INSTANCE_NAME="cloudsql-mysql-gc-instance-2212" # Cloud SQL instance name (global)
+REGION="us-central1" # Region for the instance
+TIER="db-f1-micro"            # choose a tier to match workload
+#ROOT_PASSWORD="Mysql@dev1" # initial root password
+DATABASE_VERSION="MYSQL_8_0"
+
+# --- Configuration ---
+HOST="127.0.0.1" # Proxy binds locally; MySQL client connects to localhost
+
+DB_NAME="mysql"
+APP_DB_NAME="cloudsql_demo"
+SQL_FILE="agentic_mysql_create_table.sql" # DDL file that creates tables etc.
+#BUCKET="gs://alloydb-usecase/uploads"
+DB_USER="root" # Admin (or privileged) MySQL user
+PASSWORD="Mysql@dev1" # Admin password
+
+# --- New User Details ---
+NEW_USER="app_user"
+NEW_PASSWORD="Mysql@dev1" # Choose a strong, secure password for the new user
+NEW_USER_DB_NAME="mysql" # The database this new user will primarily access
