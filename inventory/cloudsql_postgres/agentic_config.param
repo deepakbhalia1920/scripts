@@ -1,0 +1,19 @@
+# --------------------------- Configuration -----------------------------------
+
+PROJECT_ID="cog01k76j1fr1385r4k0300aq7hxg" # GCP Project ID
+INSTANCE_NAME="cloudsql-postgres-instance-0112" # Cloud SQL instance name (global)
+REGION="us-central1" # Region for the instance
+TIER="db-custom-2-8192" # Choose based on your need but should not be micro and small, example  # Custom tier: 2 vCPU, 8 GB RAM
+ROOT_PASSWORD="Cloudsql@dev1" # Password for 'postgres' user should be change as per need.
+DATABASE_VERSION="POSTGRES_14" # PostgreSQL major version
+ACCOUNT="deepak.kumar214e17@cognizant.com"  # gcloud account to use
+
+# --- Configuration ---
+
+HOST="127.0.0.1" # Local host used by the proxy
+PORT="5432" # Local port used by the proxy
+DB_NAME="postgres" # Target database for running DDL
+SQL_FILE="agentic_cloudsql_create_table.sql" # SQL script containing DDL
+#BUCKET="gs://alloydb-usecase/uploads"
+DB_USER="postgres" # Database user
+PASSWORD="Cloudsql@dev1" #Database password
