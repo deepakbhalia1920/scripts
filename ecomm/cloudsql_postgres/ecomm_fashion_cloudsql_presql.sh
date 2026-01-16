@@ -18,7 +18,7 @@ PRE_SQL_FILE="${PRE_SQL_FILE}"
 export PGPASSWORD=$PASSWORD
 
 # Start Cloud SQL Auth Proxy
-cloud-sql-proxy "$PROJECT_ID:$REGION:$INSTANCE_NAME" &
+cloud-sql-proxy --port=${PORT} "$PROJECT_ID:$REGION:$INSTANCE_NAME" &
 PROXY_PID=$!
 sleep 5  # Wait for proxy to initialize
 
@@ -32,4 +32,6 @@ if [ $? -eq 0 ]; then
 else
     echo "Error, presql statements not run successfully. hence exiting."
     exit 1
+
 fi
+kill $PROXY_PID
