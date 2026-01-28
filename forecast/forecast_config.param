@@ -1,0 +1,73 @@
+#### change the values as per need
+export FORECAST_CONFIG="/home/deepak_kumar214e17/alloydb_gc/forecast/script/forecast_config.param"
+
+PROJECT_ID="cog01k76j1fr1385r4k0300aq7hxg"  # GCP Project ID
+REGION="us-central1"  # Region where AlloyDB cluster will be created
+CLUSTER_ID="alloydb-dev-cluster-new" # Name of the AlloyDB cluster
+INSTANCE_ID="alloydb-dev-primary-new"  # Name of the primary instance
+DB_PASSWORD="AlloyDB_Dev" # Password for the default database user
+MACHINE_TYPE="n2-highmem-2" # Machine type for the instance
+NETWORK_NAME="alloydb-network"  # VPC network name
+ACCOUNT="deepak.kumar214e17@cognizant.com" # GCP account to use
+###git parameters
+REPO_URL="https://github.com/deepakbhalia1920/srcdump.git" # Source repo URL
+CLONE_DIR="raw_dataset"  # Local repo directory
+CLONE_DIR_FORECAST="/home/deepak_kumar214e17/raw_dataset/Forecast/dataset"
+#BUCKET_NAME="gs://alloydb-gc-usecase/uploads/"
+# Target GCS bucket/folder (must exist or gsutil should have permissions to create)
+BUCKET_NAME="gs://alloydb-gc-usecase-newsetup/raw/forecast/"
+HOMEDIR="/home/deepak_kumar214e17"  # Your home directory
+
+FILES_FORECAST_TRAIN=forecast_train.csv
+FILES_FORECAST_STORE=forecast_store.csv
+FILES_FORCAST_TEST=forecast_test.csv
+
+# --------------------------- VM Configuration ---------------------------------
+CLUSTER_ID="alloydb-dev-cluster-new"
+PRIMARY_INSTANCE_ID="alloydb-dev-primary-new"
+INSTANCE_NAME="agent-my-vm-test16" # Compute Engine instance name
+REGION="us-central1"
+ZONE_NAME="us-central1-a" # Zone for VM
+MACHINE_NAME="e2-medium" # Machine type
+IMAGE_FAMILY="debian-11" # OS image family
+IMAGE_PROJECT="debian-cloud"  # OS image project
+TAG="ssh-access"
+SCOPES="https://www.googleapis.com/auth/cloud-platform"
+# --------------------------- Account / Project --------------------------------
+ACCOUNT="deepak.kumar214e17@cognizant.com"
+PROJECT_NAME="cog01k76j1fr1385r4k0300aq7hxg"
+
+# VPC and Subnet details (update these as per your environment)
+VPC_NAME="default" # Target VPC network
+SUBNET_NAME="default"  # Target subnet within VPC
+
+# AlloyDB details
+#ALLOYDB_HOST="10.123.50.2"
+ALLOYDB_PORT=5432
+###########
+
+# --- Configuration ---
+#HOST="10.0.0.11"
+PORT="5432"  # Postgres port
+DATABASE_NAME="postgres"  # Target database
+SQL_FILE="forecast_create_table.sql" # SQL file to execute
+PRE_SQL_FILE="forecast_create_presql.sql"
+USER="postgres" # Database user
+PASSWORD="AlloyDB_Dev" # Password
+###################################
+# --------------------------- Configuration -----------------------------------
+BUCKET_NAME="alloydb-gc-usecase-newsetup"
+# Destination tables (schema.table)
+BUCKET="gs://alloydb-gc-usecase-newsetup/raw/forecast/"
+
+# File names (inside the BUCKET prefix) that should exist in GCS
+STORE_FILENAME="forecast_store.csv" #Store csv
+TRAIN_FILENAME="forecast_train.csv" #Train csv
+TEST_FILENAME="forecast_test.csv"
+
+STORE_TABLE="alloydb_demo.forecast_store"  # Store-level data table
+TRAIN_TABLE="alloydb_demo.forecast_train" # Training set table
+TEST_TABLE="alloydb_demo.forecast_test" # Test set table
+SCHEMA_NAME="alloydb_usecase"
+########################################
+USERNAME="deepak_kumar214e17"
