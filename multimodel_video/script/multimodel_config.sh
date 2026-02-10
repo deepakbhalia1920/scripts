@@ -30,4 +30,6 @@ export SQL_FILE="multimodel_create_table.sql" # SQL file to execute
 export BUCKET="gs://alloydb-usecase/uploads"
 export USER="postgres" # Database user
 export USERNAME="deepak_kumar214e17"
+
 export SCHEMA_NAME="alloydb_usecase"
+export SRC_MULTIMODEL="/home/deepak_kumar214e17/alloydb/multi_model/script/"
