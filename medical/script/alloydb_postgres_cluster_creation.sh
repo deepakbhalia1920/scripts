@@ -4,8 +4,6 @@
 #   - Create a PRIMARY AlloyDB instance for the cluster
 #   - Call a .sh script to execute DDL against the AlloyDB database
 
-#. "$MEDICAL_CONFIG"
-#. /home/deepak_kumar214e17/alloydb/medical/script/medical_config.param
 source ./medical_config.sh
 echo $PROJECT_ID
 echo $REGION
@@ -50,5 +48,6 @@ else
     echo "Error creating primary instance '${INSTANCE_ID}'. Exiting."
     exit 1
 fi
+
 
 echo "AlloyDB cluster and primary instance creation script completed."
