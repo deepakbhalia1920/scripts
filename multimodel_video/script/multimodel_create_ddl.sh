@@ -9,8 +9,6 @@
 #   - 'postgresql-client' available (installed below if missing)
 #   - SQL file exists and DDL is idempotent (recommended for repeat runs)
 # -----------------------------------------------------------------------------
-#gcloud config set account "deepak.kumar214e17@cognizant.com"
-#gcloud config set project "dotengage"
 
 . ./multimodel_config.sh
 # --- Configuration ---
@@ -42,5 +40,6 @@ psql \
   --set=ON_ERROR_STOP=1 \
   --set=schema_name="${SCHEMA_NAME}" \
   --file="${SQL_FILE}"
+
 
 echo "DDL execution completed successfully."
