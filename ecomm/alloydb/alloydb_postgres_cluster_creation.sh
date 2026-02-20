@@ -26,7 +26,7 @@ else
      --region="${REGION}" \
      --network="projects/${PROJECT_ID}/global/networks/default" \
      --password="${DB_PASSWORD}" \
-     --database-version=POSTGRES_14
+     --database-version=POSTGRES_16
 fi
 
 # Check if cluster creation succeeded
@@ -58,5 +58,6 @@ else
     echo "Error creating primary instance '${INSTANCE_ID}'. Exiting."
     exit 1
 fi
+
 
 echo "AlloyDB cluster and primary instance creation script completed."
