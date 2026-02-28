@@ -21,7 +21,7 @@ export CLONE_DIR="raw_dataset"
 export CLONE_DIR_MED="/home/deepak_kumar214e17/raw_dataset/Medical/dataset"
 export BUCKET_NAME="" # Need to provide bucket path here eg gs://alloydb-gc-usecase-newsetup/raw/medical/
 export HOMEDIR="" # Need to provide your home directory path eg /home/deepak_kumar214e17
-export FILES_TO_UPLOAD="disease_medtests.csv" #File name must be like this only
+export FILES_TO_UPLOAD="disease_tests_info.csv" #File name must be like this only
 
 # Updated script to create VM, ensure AlloyDB connectivity, and run DDL
 
@@ -53,4 +53,5 @@ export BUCKET_NAME_ROOT="" # Need to provide bucket root path for eg alloydb-gc-
 export SCHEMA_NAME="" # Need to provide schema name for eg alloydb_usecase
 
 export USERNAME="" # Need to provide username which was mentioned in home directory 
+
 export SRC_MED="" # Provide source path where scripts present for medical use case in cloud shell eg /home/deepak_kumar214e17/alloydb/medical/script/
