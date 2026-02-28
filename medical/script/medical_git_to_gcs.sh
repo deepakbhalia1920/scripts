@@ -17,7 +17,7 @@ gcloud config set project "${PROJECT_ID}"
 
 # Clone the repo
 echo "copying the file from gitrepo to gcs bucket"
-#git clone "$REPO_URL" "$CLONE_DIR"
+git clone "$REPO_URL" "$CLONE_DIR"
 
 # Expand wildcard into array
 
@@ -60,4 +60,5 @@ if [ $? -eq 0 ]; then
 else
     echo "Error file not moved to GCS location. hence exiting."
     exit 1
+
 fi
