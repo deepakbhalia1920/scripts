@@ -17,15 +17,23 @@ gcloud config set project "${PROJECT_ID}"
 
 # Clone the repo
 echo "copying the file from gitrepo to gcs bucket"
-git clone "$REPO_URL" "$CLONE_DIR"
+#git clone "$REPO_URL" "$CLONE_DIR"
 
 # Expand wildcard into array
-
 # Set permissions
-cd "$HOMEDIR/$CLONE_DIR"
-git pull
-sleep 5
-echo "${CLONE_DIR_MED}"
+
+echo "directory checking block started"
+if [ -d "$HOMEDIR/$CLONE_DIR" ]; then
+        echo "Directory exist, pulling latest changes"
+        cd "$HOMEDIR/$CLONE_DIR"
+        git pull --no-rebase
+        sleep 5
+else 
+        echo "cloning directory"
+        git clone "$REPO_URL" "$CLONE_DIR"
+fi
+
+
 cd "${CLONE_DIR_MED}"
 #FILES_TO_UPLOAD=(*ecommerce*)
 #echo "${FILES_TO_UPLOAD[@]}"
@@ -60,5 +68,4 @@ if [ $? -eq 0 ]; then
 else
     echo "Error file not moved to GCS location. hence exiting."
     exit 1
-
 fi
