@@ -8,4 +8,5 @@ ALTER TABLE :"schema_name".disease_tests_info
 ADD COLUMN disease_name_embedding VECTOR(768); 
 
 UPDATE :"schema_name".disease_tests_info
-SET disease_name_embedding = google_ml.embedding('text-embedding-005', disease_name_csv);
+
+SET disease_name_embedding = google_ml.embedding('text-embedding-005', disease_name);
